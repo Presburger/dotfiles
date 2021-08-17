@@ -1,0 +1,12 @@
+# Rime user dictionary
+#@/db_name	easy_en
+#@/db_type	userdb
+#@/rime_version	1.6.1
+#@/tick	6
+#@/user_id	ArchLinux
+accumulate 	accumulate	c=1 d=1 t=4
+auto 	auto	c=1 d=1 t=3
+code 	code	c=1 d=1 t=1
+python 	Python	c=1 d=1 t=2
+python 	python	c=1 d=1 t=6
+work 	work	c=1 d=1 t=5
