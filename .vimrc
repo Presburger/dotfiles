@@ -278,12 +278,9 @@ let g:indentLine_char = '┊'
 " ale
 let g:ale_completion_autoimport = 0
 let g:ale_completion_enabled = 0
-let g:ale_linters_explicit = 1
-let g:ale_linters = {
-\   'python': ['pyflakes'],
-\}
 let g:ale_fixers = {
-\   'python': ['pyflakes'],
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'python': ['pylint'],
 \}
 let g:ale_echo_msg_error_str = '✗'
 let g:ale_echo_msg_warning_str = '!'
