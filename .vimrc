@@ -192,7 +192,7 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 map <F6> :call TitleDet()<cr>
 function AddTitle()
     call append(0,"/*")
-    call append(1," * Author: yusheng.ma - yusheng.ma@streamcomputing.com")
+    call append(1," * Author: Yusheng.Ma - Yusheng.Ma@zilliz.com")
     call append(2," * Last modified: ".strftime("%Y-%m-%d %H:%M"))
     call append(3," * Filename: ".expand("%:t"))
     call append(4," *")
