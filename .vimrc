@@ -123,8 +123,6 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'Yggdroot/indentLine'
-Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'roxma/vim-tmux-clipboard'
 Plug 'dense-analysis/ale'
 Plug 'dracula/vim', { 'as': 'dracula' }
 call plug#end()
@@ -192,7 +190,7 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 map <F6> :call TitleDet()<cr>
 function AddTitle()
     call append(0,"/*")
-    call append(1," * Author: Yusheng.Ma - Yusheng.Ma@zilliz.com")
+    call append(1," * Author: yusheng.ma - Yusheng.Ma@zilliz.com")
     call append(2," * Last modified: ".strftime("%Y-%m-%d %H:%M"))
     call append(3," * Filename: ".expand("%:t"))
     call append(4," *")
@@ -276,11 +274,12 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 let g:indentLine_char = '┊'
 
 " ale
+let g:ale_linters_explicit = 1
 let g:ale_completion_autoimport = 0
 let g:ale_completion_enabled = 0
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'python': ['pylint'],
+\   'python': ['flake8'],
 \}
 let g:ale_echo_msg_error_str = '✗'
 let g:ale_echo_msg_warning_str = '!'
