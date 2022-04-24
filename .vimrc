@@ -277,8 +277,7 @@ let g:indentLine_char = '┊'
 let g:ale_linters_explicit = 1
 let g:ale_completion_autoimport = 0
 let g:ale_completion_enabled = 0
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+let g:ale_linters = {
 \   'python': ['flake8'],
 \}
 let g:ale_echo_msg_error_str = '✗'
