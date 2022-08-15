@@ -1,63 +1,101 @@
-# Copyright 2013 Google, Inc.
-# Copyright 2013 Dean Michael Berris <dberris@google.com>
-# Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# This file is NOT licensed under the GPLv3, which is the license for the rest
+# of YouCompleteMe.
 #
-# Project-wide configuration for YouCompleteMe Vim plugin.
+# Here's the license text for this file:
 #
-# Based off of Valloric's .ycm_conf_extra.py for YouCompleteMe:
-#  https://github.com/Valloric/YouCompleteMe/blob/master/cpp/ycm/.ycm_extra_conf.py
+# This is free and unencumbered software released into the public domain.
 #
+# Anyone is free to copy, modify, publish, use, compile, sell, or
+# distribute this software, either in source code form or as a compiled
+# binary, for any purpose, commercial or non-commercial, and by any
+# means.
+#
+# In jurisdictions that recognize copyright laws, the author or authors
+# of this software dedicate any and all copyright interest in the
+# software to the public domain. We make this dedication for the benefit
+# of the public at large and to the detriment of our heirs and
+# successors. We intend this dedication to be an overt act of
+# relinquishment in perpetuity of all present and future rights to this
+# software under copyright law.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+# OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+#
+# For more information, please refer to <http://unlicense.org/>
 
 import os
+import ycm_core
+
+
+DIR_OF_THIS_SCRIPT = os.path.abspath(os.path.dirname(__file__))
 
 flags = [
     "-Wall",
     "-Wextra",
-    "-Werror",
-    "-std=c++17",
     "-x",
     "c++",
     "-isystem",
+    "/usr/local/include",
+    "-isystem",
     "/usr/include",
     "-isystem",
-    "/usr/local/include",
+    "/usr/include/x86_64-linux-gnu/c++/9",
+    "-std=c++17",
 ]
 
 
-def DirectoryOfThisScript():
-    return os.path.dirname(os.path.abspath(__file__))
+compilation_database_folder = DIR_OF_THIS_SCRIPT
 
 
-def MakeRelativePathsInFlagsAbsolute(flags, working_directory):
-    if not working_directory:
-        return list(flags)
-    new_flags = []
-    make_next_absolute = False
-    path_flags = ["-isystem", "-I", "-iquote", "--sysroot="]
-    for flag in flags:
-        new_flag = flag
-        if make_next_absolute:
-            make_next_absolute = False
-            if not flag.startswith("/"):
-                new_flag = os.path.join(working_directory, flag)
-
-        for path_flag in path_flags:
-            if flag == path_flag:
-                make_next_absolute = True
-                break
-            if flag.startswith(path_flag):
-                path = flag[len(path_flag) :]
-                new_flag = path_flag + os.path.join(working_directory, path)
-                break
-
-        if new_flag:
-            new_flags.append(new_flag)
-    return new_flags
+def IsHeaderFile(filename):
+    extension = os.path.splitext(filename)[1]
+    return extension in [".h", ".hxx", ".hpp", ".hh"]
 
 
-def FlagsForFile(filename):
-    relative_to = DirectoryOfThisScript()
-    final_flags = MakeRelativePathsInFlagsAbsolute(flags, relative_to)
-    return {"flags": final_flags, "do_cache": True}
+if os.path.exists(compilation_database_folder):
+    database = ycm_core.CompilationDatabase(compilation_database_folder)
+else:
+    database = None
+
+
+def Settings(**kwargs):
+    if kwargs["language"] == "cfamily":
+        # If the file is a header, try to find the corresponding source file and
+        # retrieve its flags from the compilation database if using one. This is
+        # necessary since compilation databases don't have entries for header files.
+        # In addition, use this source file as the translation unit. This makes it
+        # possible to jump from a declaration in the header file to its definition
+        # in the corresponding source file.
+        filename = kwargs["filename"]
+
+        if IsHeaderFile(filename) or not database:
+            return {
+                "flags": flags,
+                "include_paths_relative_to_dir": DIR_OF_THIS_SCRIPT,
+                "override_filename": filename,
+            }
+
+        compilation_info = database.GetCompilationInfoForFile(filename)
+        print(compilation_info.compiler_flags_)
+        if not compilation_info.compiler_flags_:
+            return {
+                "flags": flags,
+                "include_paths_relative_to_dir": DIR_OF_THIS_SCRIPT,
+                "override_filename": filename,
+            }
+
+        # Bear in mind that compilation_info.compiler_flags_ does NOT return a
+        # python list, but a "list-like" StringVec object.
+        final_flags = list(compilation_info.compiler_flags_)
+
+        return {
+            "flags": final_flags,
+            "include_paths_relative_to_dir": compilation_info.compiler_working_dir_,
+            "override_filename": filename,
+        }
+    return {}

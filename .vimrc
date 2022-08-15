@@ -167,6 +167,7 @@ let g:ycm_filetype_whitelist = {
             \ }
 let g:ycm_python_binary_path = 'python3'
 let g:ycm_goto_buffer_command = 'horizontal-split'
+let g:ycm_confirm_extra_conf = 0
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -251,9 +252,6 @@ set noshowmode
 "colorscheme dracula
 let g:dracula_italic = 0
 colorscheme dracula
-if &term =~ '256color' 
-    set t_Co=256
-endif
 
 "guntentags setting
 let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
@@ -278,7 +276,7 @@ let g:ale_linters_explicit = 1
 let g:ale_completion_autoimport = 0
 let g:ale_completion_enabled = 0
 let g:ale_linters = {
-\   'python': ['flake8'],
+\   'python': ['pyflakes'],
 \}
 let g:ale_echo_msg_error_str = '✗'
 let g:ale_echo_msg_warning_str = '!'
