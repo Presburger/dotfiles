@@ -81,7 +81,6 @@ def Settings(**kwargs):
             }
 
         compilation_info = database.GetCompilationInfoForFile(filename)
-        print(compilation_info.compiler_flags_)
         if not compilation_info.compiler_flags_:
             return {
                 "flags": flags,
