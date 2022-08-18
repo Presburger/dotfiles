@@ -37,15 +37,21 @@ DIR_OF_THIS_SCRIPT = os.path.abspath(os.path.dirname(__file__))
 flags = [
     "-Wall",
     "-Wextra",
+    "-std=c++17",
     "-x",
     "c++",
     "-isystem",
-    "/usr/local/include",
+    "/usr/include/c++/10",
     "-isystem",
     "/usr/include",
     "-isystem",
-    "/usr/include/x86_64-linux-gnu/c++/9",
-    "-std=c++17",
+    "/usr/local/include",
+    "-I",
+    "include/",
+    "-I",
+    "src/",
+    "-I",
+    "thirdparty/",
 ]
 
 
@@ -91,7 +97,6 @@ def Settings(**kwargs):
         # Bear in mind that compilation_info.compiler_flags_ does NOT return a
         # python list, but a "list-like" StringVec object.
         final_flags = list(compilation_info.compiler_flags_)
-
         return {
             "flags": final_flags,
             "include_paths_relative_to_dir": compilation_info.compiler_working_dir_,
