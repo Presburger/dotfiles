@@ -46,12 +46,6 @@ flags = [
     "/usr/include",
     "-isystem",
     "/usr/local/include",
-    "-I",
-    "include/",
-    "-I",
-    "src/",
-    "-I",
-    "thirdparty/",
 ]
 
 
